@@ -1,0 +1,235 @@
+# -------------------[ Persona Plymouth ]-----------------
+# ------------[ Created by M. Syarief Hidayatulloh ]------------
+# ------------------[ me.msyariefh@gmail.com ]------------------
+# --[ Not for Commercial use, except with my permission !!!! ]--
+# ------------------------[ Terimakasih ]-----------------------
+
+# ====================[ Constant here !!!!! ]==================== #
+
+maximum_msg = 5;
+ubuntufont = "Noto Sans Light 18";
+perfont = "Noto Sans Light 20";
+progressfont = "Noto Sans 15";
+hi_text = "Starting Up";
+bye_text = "Powering Down";
+progress_t= 0;
+
+# ====================[ End of Constant ]==================== #
+
+# ====================[ Scale Desktop begin ]==================== #
+
+bg_image = Image("persona_background.png");
+window_max_width = Window.GetX() * 2 + Window.GetWidth();
+window_max_height = Window.GetY() * 2 + Window.GetHeight();
+screen_ratio = window_max_width / window_max_height;
+bg_image_ratio = bg_image.GetWidth() / bg_image.GetHeight();
+if (screen_ratio > bg_image_ratio)
+    bg_scale_factor = window_max_width / bg_image.GetWidth();
+else
+    bg_scale_factor = window_max_height / bg_image.GetHeight();
+scaled_bg_image = bg_image.Scale(bg_image.GetWidth() * bg_scale_factor,
+                                 bg_image.GetHeight() * bg_scale_factor);
+bg_sprite = Sprite(scaled_bg_image);
+bg_sprite.SetPosition(Window.GetX() + Window.GetWidth() / 2 - scaled_bg_image.GetWidth() / 2,
+                      Window.GetY() + Window.GetHeight() / 2 - scaled_bg_image.GetHeight() / 2,
+                      -10000);
+
+# ====================[ Scale Desktop end ]==================== #
+
+# ====================[ Text_center begin ]==================== #
+
+  if (Plymouth.GetMode () == "boot")
+     { 
+        text.image = Image.Text (hi_text,255,255,255,1, ubuntufont);
+        text.sprite = Sprite(text.image);
+        text.x = Window.GetX() + Window.GetWidth()  / 2 - text.image.GetWidth() / 2;
+        text.y = Window.GetY() + Window.GetHeight() * 0.505  - text.image.GetHeight() / 2;
+        text.sprite.SetPosition(text.x, text.y, 2);
+      }
+  else 
+     {
+        text_end.image = Image.Text(bye_text,255,255,255,1, ubuntufont);
+        text_end.sprite = Sprite(text_end.image);
+        text_end.x = Window.GetX() + Window.GetWidth()  / 2 - text_end.image.GetWidth() / 2;
+        text_end.y = Window.GetY() + Window.GetHeight() * 0.505  - text_end.image.GetHeight() / 2;
+        text_end.sprite.SetPosition(text_end.x, text_end.y, 2);
+      }
+# ====================[ Text_center end ]==================== #
+
+# ====================[ persona Logo begin ]==================== #
+
+new_logo.image = Image("persona.png");
+    new_logo.sprite = Sprite();
+    new_logo.x = Window.GetWidth() / 2 - new_logo.image.GetWidth()  / 2;
+    new_logo.y = Window.GetHeight() * 0.35 - new_logo.image.GetHeight() / 2;
+    new_logo.sprite.SetPosition(new_logo.x, new_logo.y, 10);
+    new_logo.sprite.SetImage(new_logo.image);
+
+# ====================[ Persona Logo end ]==================== #
+
+# ====================[ Dialog_script begin ]==================== #
+
+status = "normal";
+
+fun dialog_setup()
+  {
+    local.box;
+    local.lock;
+    local.entry;
+    
+    box.image = Image("box.png");
+    lock.image = Image("lock.png");
+    entry.image = Image("entry.png");
+    
+    box.sprite = Sprite(box.image);
+    box.x = Window.GetX() + Window.GetWidth()  / 2 - box.image.GetWidth ()/2;
+    box.y = Window.GetY() + Window.GetHeight() / 2 - box.image.GetHeight()/2;
+    box.z = 10000;
+    box.sprite.SetPosition(box.x, box.y, box.z);
+    
+    lock.sprite = Sprite(lock.image);
+    lock.x = box.x + box.image.GetWidth()/2 - (lock.image.GetWidth() + entry.image.GetWidth()) / 2;
+    lock.y = box.y + box.image.GetHeight()/2 - lock.image.GetHeight()/2;
+    lock.z = box.z + 1;
+    lock.sprite.SetPosition(lock.x, lock.y, lock.z);
+    
+    entry.sprite = Sprite(entry.image);
+    entry.x = lock.x + lock.image.GetWidth();
+    entry.y = box.y + box.image.GetHeight()/2 - entry.image.GetHeight()/2;
+    entry.z = box.z + 1;
+    entry.sprite.SetPosition(entry.x, entry.y, entry.z);
+    
+    global.dialog.box = box;
+    global.dialog.lock = lock;
+    global.dialog.entry = entry;
+    global.dialog.bullet_image = Image("bullet.png");
+    dialog_opacity (1);
+  }
+    
+fun dialog_opacity(opacity)
+  {
+    dialog.box.sprite.SetOpacity (opacity);
+    dialog.lock.sprite.SetOpacity (opacity);
+    dialog.entry.sprite.SetOpacity (opacity);
+    for (index = 0; dialog.bullet[index]; index++)
+      {
+        dialog.bullet[index].sprite.SetOpacity(opacity);
+      }
+  }
+
+fun display_normal_callback ()
+  {
+    global.status = "normal";
+    if (global.dialog)
+      dialog_opacity (0);
+  }
+
+fun display_password_callback (prompt, bullets)
+  {
+    global.status = "password";
+    if (!global.dialog)
+  dialog_setup();
+    else
+  dialog_opacity(1);
+    for (index = 0; dialog.bullet[index] || index < bullets; index++)
+      {
+        if (!dialog.bullet[index])
+          {
+            dialog.bullet[index].sprite = Sprite(dialog.bullet_image);
+            dialog.bullet[index].x = dialog.entry.x + index * dialog.bullet_image.GetWidth();
+            dialog.bullet[index].y = dialog.entry.y + dialog.entry.image.GetHeight() / 2 - dialog.bullet_image.GetHeight() / 2;
+            dialog.bullet[index].z = dialog.entry.z + 1;
+            dialog.bullet[index].sprite.SetPosition(dialog.bullet[index].x, dialog.bullet[index].y, dialog.bullet[index].z);
+          }
+        if (index < bullets)
+          dialog.bullet[index].sprite.SetOpacity(1);
+        else
+          dialog.bullet[index].sprite.SetOpacity(0);
+      }
+  }
+
+Plymouth.SetDisplayNormalFunction(display_normal_callback);
+Plymouth.SetDisplayPasswordFunction(display_password_callback);
+
+# ====================[ Dialog_script end ]==================== #
+
+# ====================[ Progress Bar begin ]==================== #
+
+progress_box.image = Image("progress_box.png");
+progress_box.sprite = Sprite(progress_box.image);
+
+progress_box.x = Window.GetX() + Window.GetWidth() / 2 - progress_box.image.GetWidth() / 2;
+progress_box.y = Window.GetY() + Window.GetHeight() * 0.55 - progress_box.image.GetHeight() / 2;
+progress_box.sprite.SetPosition(progress_box.x, progress_box.y, 0);
+
+progress_bar.original_image = Image("progress_bar.png");
+progress_bar.sprite = Sprite();
+
+progress_bar.x = Window.GetX() + Window.GetWidth()  / 2 -        progress_bar.original_image.GetWidth() / 2;
+progress_bar.y = Window.GetY() + Window.GetHeight() * 0.55  - progress_box.image.GetHeight() / 2;
+progress_bar.sprite.SetPosition(progress_bar.x, progress_bar.y, 1);
+
+fun progress_callback (duration, progress)
+  {
+progress_bar.image = progress_bar.original_image;
+progress_t.image = progress_text.image;
+
+    if (progress_bar.image.GetWidth() != Math.Int (progress_bar.original_image.GetWidth () * progress))
+      {
+        progress_bar.image = progress_bar.original_image.Scale(progress_bar.original_image.GetWidth() * progress, progress_bar.original_image.GetHeight());
+        progress_bar.sprite.SetImage (progress_bar.image);
+       
+      } 
+  }
+
+Plymouth.SetBootProgressFunction(progress_callback);
+
+# ====================[ Progress Bar end ]==================== #
+
+# ====================[ Fun Quit begin ]==================== #
+
+fun quit_callback ()
+  {
+  }
+
+Plymouth.SetQuitFunction(quit_callback);
+
+# ====================[ Fun Quit end ]==================== #
+
+# ====================[ Message begin ]==================== #
+
+msg_sprites; 
+num_displayed_msg = 0; 
+next_msg_idx = 0; 
+next_msg_y; 
+fun message_callback (text)
+  {
+    if (num_displayed_msg < maximum_msg)
+      {
+       
+        next_msg_y = 10;
+        for (i = 0; i < num_displayed_msg; i++)
+          next_msg_y += msg_sprites[i].GetImage().GetHeight() + 1; # 1px between lines
+        num_displayed_msg++;
+      }
+    else
+      {
+        
+        move_y_by = -1 - msg_sprites[(next_msg_idx + 1) % maximum_msg].GetImage().GetHeight();
+  for (i = 0; i < maximum_msg; i++)
+          {
+            msg = msg_sprites[(next_msg_idx + 1 + i) % maximum_msg];
+            msg.SetY(msg.GetY() + move_y_by);
+          }
+      }
+    next_msg_image = Image.Text(text, 1, 1, 1, 1);
+    msg_sprites[next_msg_idx] = Sprite();
+    msg_sprites[next_msg_idx].SetPosition(Window.GetX() + 10, Window.GetY() + next_msg_y, 10000);
+    msg_sprites[next_msg_idx].SetImage(next_msg_image);
+
+    next_msg_idx = (next_msg_idx + 1) % maximum_msg;
+  }
+
+Plymouth.SetMessageFunction(message_callback);
+
+# ====================[ Message end ]==================== #

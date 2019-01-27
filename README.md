@@ -198,6 +198,12 @@ Replace the images in `/usr/share/plasma/look-and-feel/org.kde.breeze.desktop/co
 
 Edit the color in `/usr/share/plasma/look-and-feel/org.kde.breeze.desktop/contents/splash/Splash.qml` to `#000B1E`.
 
+### Plymouth
+------
+Install the [Persona Bar theme](https://github.com/personaproject/persona_all_plymouth) for plymouth (might have to just download and move the directory to `/usr/share/plymouth/themes` if the install script doesn't work).
+
+Replace the files in `/usr/share/plymouth/themes/persona_bar/` with the ones in `plymouth/` in the repo.
+
 ## Acknowledgment
 * [Roboron3042](https://github.com/Roboron3042/) for the numerous dotfiles.
 
