@@ -194,15 +194,15 @@ Change center radius, number of bars, bar width, amplify, and center offset in `
 See the difference here: [[Pink](https://gfycat.com/adorablelawfulindochinesetiger)] , [[Cyan](https://gfycat.com/astonishinghappyhawk)]
 ### KDE Splash
 -----
-Replace the images in `/usr/share/plasma/look-and-feel/org.kde.breeze.desktop/contents/splash/images/` with the ones in `Splash/`.
+Install the [`arc-kde` theme](https://github.com/PapirusDevelopmentTeam/arc-kde) and replace the contents in `~/.local/share/plasma/look-and-feel/com.github.varlesh.arc-dark/contents/` with the ones provided in `Splash/`.
 
-Edit the color in `/usr/share/plasma/look-and-feel/org.kde.breeze.desktop/contents/splash/Splash.qml` to `#000B1E`.
+Replaces Arc-KDE splash.
 
 ### Plymouth
 ------
 Install the [Persona Bar theme](https://github.com/personaproject/persona_all_plymouth) for plymouth (might have to just download and move the directory to `/usr/share/plymouth/themes` if the install script doesn't work).
 
-Replace the files in `/usr/share/plymouth/themes/persona_bar/` with the ones in `plymouth/` in the repo.
+Replace the files in `/usr/share/plymouth/themes/persona_bar/` with the ones in `plymouth/` in the repo. (Replaces Persona Bar theme.)
 
 ## Acknowledgment
 * [Roboron3042](https://github.com/Roboron3042/) for the numerous dotfiles.
