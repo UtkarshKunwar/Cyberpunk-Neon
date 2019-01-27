@@ -204,6 +204,16 @@ Install the [Persona Bar theme](https://github.com/personaproject/persona_all_pl
 
 Replace the files in `/usr/share/plymouth/themes/persona_bar/` with the ones in `plymouth/` in the repo. (Replaces Persona Bar theme.)
 
+### GRUB theme
+------
+Create a copy and resize `Splash/splash/images/akali_back_blurred.png` to your screen size.
+
+`convert Splash/splash/images/akali_back_blurred.png -resize WIDTHxHEIGHT out.png`
+
+Install [Vimix theme for GRUB](https://www.gnome-look.org/p/1009236/) and replace `/boot/grub/themes/Vimix/background.png` with the resized blurred image.
+
+`sudo mv out.png /boot/grub/themes/Vimix/background.png`
+
 ## Acknowledgment
 * [Roboron3042](https://github.com/Roboron3042/) for the numerous dotfiles.
 
